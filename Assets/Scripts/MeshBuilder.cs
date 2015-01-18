@@ -1,10 +1,6 @@
-﻿///
-/// Modelling by numbers
-/// An introduction to procedural geometry
-/// 
-/// By Jayelinda Suridge
-/// http://jayelinda.com
-///
+﻿/// <summary>
+/// Mesh builder
+/// </summary>
 
 using UnityEngine;
 using System.Collections;

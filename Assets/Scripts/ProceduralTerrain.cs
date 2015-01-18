@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿/// <summary>
+/// Procedural terrain.
+/// </summary>
+
+using UnityEngine;
 using System.Collections;
 
 public class ProceduralTerrain : MonoBehaviour {
@@ -41,9 +45,10 @@ public class ProceduralTerrain : MonoBehaviour {
 				BuildQuadForGrid(meshBuilder, offset, uv, buildTriangles, meshSegmentCount + 1);
 			}
 		}
-		
+
+		// Creates the mesh
 		Mesh mesh = meshBuilder.CreateMesh();
-		
+		// Recalculates the normals of the mesh from the triangles and vertices
 		mesh.RecalculateNormals();
 		
 		// Search for a MeshFilter component attached to this GameObject
@@ -53,7 +58,12 @@ public class ProceduralTerrain : MonoBehaviour {
 
 	}
 
-
+	/// <summary>
+	/// Calculate the value of Y (heigth).
+	/// </summary>
+	/// <returns>The y value.</returns>
+	/// <param name="x">The x coordinate.</param>
+	/// <param name="z">The z coordinate.</param>
 	public float CreateY(float x, float z)
 	{
 		if (noiseLayersCount <= 1) // simple noise
@@ -86,6 +96,7 @@ public class ProceduralTerrain : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Calculates the Perlin Noise
 	/// </summary>
 	/// <returns>The perlin noise.</returns>
 	/// <param name="x">The x coordinate.</param>
@@ -97,19 +108,18 @@ public class ProceduralTerrain : MonoBehaviour {
 		int y0 = (y > 0.0 ? (int)y : (int)y - 1);
 		
 		// Determine interpolation weights
-		// Could also use higher order polynomial/s-curve here
 		float sx = x - x0;
 		float sy = y - y0;
 		
-		//wrap around
+		// wrap around
 		int x1 = (int)(x + noiseWidth % noiseWidth);
 		int y1 = (int)(y + noiseHeight % noiseHeight);
 		
-		//neighbour values
+		// neighbour values
 		int x2 = (x1 + noiseWidth - 1) % noiseWidth;
 		int y2 = (y1 + noiseHeight - 1) % noiseHeight;
 		
-		//smooth the noise with bilinear interpolation
+		// smooth the noise with bilinear interpolation
 		float value = 0.0f;
 		value += sx       * sy       * noiseValues[x1, y1];
 		value += sx       * (1 - sy) * noiseValues[x1, y2];
@@ -120,6 +130,7 @@ public class ProceduralTerrain : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Generate a noise grid
 	/// </summary>
 	public void generateNoise()
 	{
