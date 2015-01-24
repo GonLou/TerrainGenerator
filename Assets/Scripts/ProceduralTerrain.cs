@@ -103,13 +103,13 @@ public class ProceduralTerrain : MonoBehaviour {
 	/// <param name="y">The y coordinate.</param>
 	public float MyPerlinNoise(float x, float y)
 	{
-		// Determine grid cell coordinates
-		int x0 = (x > 0.0 ? (int)x : (int)x - 1);
-		int y0 = (y > 0.0 ? (int)y : (int)y - 1);
+		// Get grid cell coordinates
+		int intX = (x > 0.0 ? (int)x : (int)x - 1);
+		int intY = (y > 0.0 ? (int)y : (int)y - 1);
 		
-		// Determine interpolation weights
-		float sx = x - x0;
-		float sy = y - y0;
+		// get decimal part of x and y
+		float decX = x - intX;
+		float decY = y - intY;
 		
 		// wrap around
 		int x1 = (int)(x + noiseWidth % noiseWidth);
@@ -120,13 +120,13 @@ public class ProceduralTerrain : MonoBehaviour {
 		int y2 = (y1 + noiseHeight - 1) % noiseHeight;
 		
 		// smooth the noise with bilinear interpolation
-		float value = 0.0f;
-		value += sx       * sy       * noiseValues[x1, y1];
-		value += sx       * (1 - sy) * noiseValues[x1, y2];
-		value += (1 - sx) * sy       * noiseValues[x2, y1];
-		value += (1 - sx) * (1 - sy) * noiseValues[x2, y2];
+		float result = 0.0f;
+		result += decX       * decY       * noiseValues[x1, y1];
+		result += decX       * (1 - decY) * noiseValues[x1, y2];
+		result += (1 - decX) * decY       * noiseValues[x2, y1];
+		result += (1 - decX) * (1 - decY) * noiseValues[x2, y2];
 		
-		return value;
+		return result;
 	}
 
 	/// <summary>
